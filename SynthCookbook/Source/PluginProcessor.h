@@ -9,11 +9,16 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthParameters.h"
+#include "SynthCookbookSynthSound.h"
+#include "SynthCookbookSynthesizer.h"
 
 //==============================================================================
 /**
 */
-class SynthCookbookAudioProcessor  : public juce::AudioProcessor
+class SynthCookbookAudioProcessor
+    : public juce::AudioProcessor
+    , public juce::ChangeBroadcaster
 {
 public:
     //==============================================================================
@@ -52,8 +57,23 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    
+public:
+    SynthCookbookSynthSound* getSound() { return pSound; }
+    
 private:
-    //==============================================================================
+    static const int kNumberOfPrograms = 128;
+    static const int kNumberOfVoices = 16;
+    
+    SynthCookbookSynthesizer synth;
+    SynthCookbookSynthSound* pSound;
+    SynthParameters programBank[kNumberOfPrograms];
+    int currentProgram;
+    
+private:
+    void initializePrograms();
+    
+    //void loadNewSample(const void* data, int dataSize);
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthCookbookAudioProcessor)
 };
