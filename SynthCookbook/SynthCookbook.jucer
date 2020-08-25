@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="EmcifJ" name="SynthCookbook" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="N4kixO" name="SynthCookbook" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
-  <MAINGROUP id="SQXnxi" name="SynthCookbook">
-    <GROUP id="{C8F1CD22-1BB8-D950-AF6D-8BE6B86BD4B0}" name="Source">
-      <FILE id="LyvW78" name="PluginProcessor.cpp" compile="1" resource="0"
+  <MAINGROUP id="DGp7YL" name="SynthCookbook">
+    <GROUP id="{C8AC3D1F-0BD7-9AA6-1402-21800D7D88B5}" name="Source">
+      <FILE id="QOzlTN" name="SynthVoice.h" compile="0" resource="0" file="Builds/MacOSX/SynthVoice.h"/>
+      <FILE id="U9yywU" name="SynthOscillator.h" compile="0" resource="0"
+            file="Builds/MacOSX/SynthOscillator.h"/>
+      <FILE id="QTb7Rk" name="SynthSound.h" compile="0" resource="0" file="Builds/MacOSX/SynthSound.h"/>
+      <FILE id="DfRWZu" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="Xtkn6n" name="PluginProcessor.h" compile="0" resource="0"
+      <FILE id="s7PSgK" name="SynthParameters.h" compile="0" resource="0"
+            file="Builds/MacOSX/SynthParameters.h"/>
+      <FILE id="ZcagZE" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="KUV9CX" name="PluginEditor.cpp" compile="1" resource="0"
+      <FILE id="ZQEJRF" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="IMd7Ud" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="pYfpWr" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
