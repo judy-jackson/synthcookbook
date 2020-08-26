@@ -4,6 +4,10 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="DGp7YL" name="SynthCookbook">
     <GROUP id="{C8AC3D1F-0BD7-9AA6-1402-21800D7D88B5}" name="Source">
+      <FILE id="MwwEfF" name="SynthEnvelopeGenerator.cpp" compile="1" resource="0"
+            file="Source/SynthEnvelopeGenerator.cpp"/>
+      <FILE id="wGNre2" name="SynthEnvelopeGenerator.h" compile="0" resource="0"
+            file="Source/SynthEnvelopeGenerator.h"/>
       <FILE id="q62MlZ" name="SynthParameters.h" compile="0" resource="0"
             file="Source/SynthParameters.h"/>
       <FILE id="RA1Sgu" name="SynthParameters.cpp" compile="1" resource="0"
