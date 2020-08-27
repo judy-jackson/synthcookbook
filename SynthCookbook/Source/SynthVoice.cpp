@@ -86,7 +86,7 @@ void SynthVoice::setup (bool pitchBendOnly)
         osc2Level.setTargetValue(float((1.0 - pParams->oscBlend) * masterLevel));
     }
     
-    /*
+    
     if (!pitchBendOnly)
     {
         ampEG.attackSeconds = pParams->ampEgAttackTimeSeconds;
@@ -94,7 +94,7 @@ void SynthVoice::setup (bool pitchBendOnly)
         ampEG.sustainLevel = pParams->ampEgSustainLevel;
         ampEG.releaseSeconds = pParams->ampEgReleaseTimeSeconds;
     }
-     */
+     
 }
 void SynthVoice::soundParameterChanged()
 {

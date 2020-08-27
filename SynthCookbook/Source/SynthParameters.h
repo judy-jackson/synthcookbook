@@ -8,7 +8,7 @@
 #ifndef SynthParameters_h
 #define SynthParameters_h
 #endif /* SynthParameters_h */
-
+#pragma once
 #include <JuceHeader.h>
 
 class SynthParameters
