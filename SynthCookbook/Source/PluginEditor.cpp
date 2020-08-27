@@ -11,11 +11,15 @@
 
 //==============================================================================
 SynthCookbookAudioProcessorEditor::SynthCookbookAudioProcessorEditor (SynthCookbookAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), keyboardComponent (p.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard), audioProcessor (p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+    
+    addAndMakeVisible (keyboardComponent);
     setSize (400, 300);
+    
+    startTimer (400);
 }
 
 SynthCookbookAudioProcessorEditor::~SynthCookbookAudioProcessorEditor()
@@ -37,4 +41,11 @@ void SynthCookbookAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    keyboardComponent.setBounds (10, 10, getWidth() - 20, getHeight() - 20);
+}
+
+void SynthCookbookAudioProcessorEditor:: timerCallback()
+{
+    keyboardComponent.grabKeyboardFocus();
+    juce::Timer::stopTimer();
 }

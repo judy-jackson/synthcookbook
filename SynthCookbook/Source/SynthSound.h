@@ -10,6 +10,7 @@
 
 
 #endif /* SynthSound_h */
+#pragma once
 #include <JuceHeader.h>
 #include "SynthParameters.h"
 

@@ -14,7 +14,9 @@
 //==============================================================================
 /**
 */
-class SynthCookbookAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SynthCookbookAudioProcessorEditor
+    : public juce::AudioProcessorEditor
+    , private juce::Timer
 {
 public:
     SynthCookbookAudioProcessorEditor (SynthCookbookAudioProcessor&);
@@ -23,10 +25,16 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    
+    
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
+    void timerCallback() override;
+    
+    juce::MidiKeyboardComponent keyboardComponent;
+    
     SynthCookbookAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthCookbookAudioProcessorEditor)

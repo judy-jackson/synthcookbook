@@ -9,16 +9,21 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthParameters.h"
+#include "SynthSound.h"
+#include "Synth.h"
 
 //==============================================================================
 /**
 */
 class SynthCookbookAudioProcessor  : public juce::AudioProcessor
 {
+//default template-generated code
 public:
     //==============================================================================
+    SynthCookbookAudioProcessor(juce::MidiKeyboardState& keyState);
     SynthCookbookAudioProcessor();
-    ~SynthCookbookAudioProcessor() override;
+    ~SynthCookbookAudioProcessor() override = default;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -53,7 +58,26 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+//custom code to add synthesizer components
+public:
+    SynthSound* getSound() { return pSound; }
+    juce::MidiKeyboardState keyboardState;
+    
+private:
+    static const int kNumberOfPrograms = 128;
+    static const int kNumberOfVoices = 16;
+    
+    Synth synth;
+    SynthSound* pSound;
+    
+    
+    juce::MidiMessageCollector midiCollector;
+    
+    SynthParameters programBank[kNumberOfPrograms];
+    int currentProgram;
+
 private:
     //==============================================================================
+    void initializePrograms();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthCookbookAudioProcessor)
 };
