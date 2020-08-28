@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "SynthVoice.h"
+#include "SynthSound.h"
 
 //==============================================================================
 SynthCookbook2AudioProcessor::SynthCookbook2AudioProcessor()
@@ -22,26 +24,47 @@ SynthCookbook2AudioProcessor::SynthCookbook2AudioProcessor()
                        )
 #endif
 {
+    initializeSynth();
 }
 
-SynthCookbook2AudioProcessor::~SynthCookbook2AudioProcessor()
+//SynthCookbook2AudioProcessor::~SynthCookbook2AudioProcessor() {}
+
+//==============================================================================
+// CUSTOM FUNCTIONS
+//==============================================================================
+void SynthCookbook2AudioProcessor::initializeSynth()
 {
+    auto numVoices = 8;
+    
+    // Add some voices...
+    for (auto i = 0; i < numVoices; ++i)
+        synth.addVoice (new SynthVoice());
+    
+    // ..and give the synth a sound to play
+    synth.addSound (new SynthSound());
+}
+
+template <typename FloatType>
+void SynthCookbook2AudioProcessor::process (juce::AudioBuffer<FloatType>& buffer, juce::MidiBuffer& midiMessages)
+{
+    auto numSamples = buffer.getNumSamples();
+    
+    // In case we have more outputs than inputs, we'll clear any output
+    // channels that didn't contain input data, (because these aren't
+    // guaranteed to be empty - they may contain garbage).
+    for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
+        buffer.clear (i, 0, numSamples);
+    
+    // Now pass any incoming midi messages to our keyboard state object, and let it
+    // add messages to the buffer if the user is clicking on the on-screen keys
+    keyboardState.processNextMidiBuffer (midiMessages, 0, numSamples, true);
+    
+    // and now get our synth to process these midi events and generate its output.
+    synth.renderNextBlock (buffer, midiMessages, 0, numSamples);
+    
 }
 
 //==============================================================================
-const juce::String SynthCookbook2AudioProcessor::getName() const
-{
-    return JucePlugin_Name;
-}
-
-bool SynthCookbook2AudioProcessor::acceptsMidi() const
-{
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
-}
 
 bool SynthCookbook2AudioProcessor::producesMidi() const
 {
@@ -61,69 +84,43 @@ bool SynthCookbook2AudioProcessor::isMidiEffect() const
    #endif
 }
 
-double SynthCookbook2AudioProcessor::getTailLengthSeconds() const
-{
-    return 0.0;
-}
-
-int SynthCookbook2AudioProcessor::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
-}
-
-int SynthCookbook2AudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
-
-void SynthCookbook2AudioProcessor::setCurrentProgram (int index)
-{
-}
-
-const juce::String SynthCookbook2AudioProcessor::getProgramName (int index)
-{
-    return {};
-}
-
-void SynthCookbook2AudioProcessor::changeProgramName (int index, const juce::String& newName)
-{
-}
-
 //==============================================================================
-void SynthCookbook2AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void SynthCookbook2AudioProcessor::prepareToPlay (double newSampleRate, int /*samplesPerBlock*/)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    synth.setCurrentPlaybackSampleRate (newSampleRate);
+    keyboardState.reset();
+
 }
 
 void SynthCookbook2AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    keyboardState.reset();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool SynthCookbook2AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    // Only mono/stereo and input/output must have same layout
+    const auto& mainOutput = layouts.getMainOutputChannelSet();
+    const auto& mainInput  = layouts.getMainInputChannelSet();
+    
+    // input and output layout must either be the same or the input must be disabled altogether
+    if (! mainInput.isDisabled() && mainInput != mainOutput)
         return false;
-
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+    
+    // do not allow disabling the main buses
+    if (mainOutput.isDisabled())
         return false;
-   #endif
-
+    
+    // only allow stereo and mono
+    if (mainOutput.size() > 2)
+        return false;
+    
     return true;
-  #endif
 }
 #endif
 
@@ -142,25 +139,10 @@ void SynthCookbook2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+    process(buffer, midiMessages);
 }
 
 //==============================================================================
-bool SynthCookbook2AudioProcessor::hasEditor() const
-{
-    return true; // (change this to false if you choose to not supply an editor)
-}
 
 juce::AudioProcessorEditor* SynthCookbook2AudioProcessor::createEditor()
 {
