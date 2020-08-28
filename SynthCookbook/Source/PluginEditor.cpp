@@ -20,6 +20,9 @@ SynthCookbookAudioProcessorEditor::SynthCookbookAudioProcessorEditor (SynthCookb
     setSize (400, 300);
     
     startTimer (400);
+    juce::String message;
+    message << "Keyboard component added and initialized. \n";
+    juce::Logger::getCurrentLogger()->writeToLog(message);
 }
 
 SynthCookbookAudioProcessorEditor::~SynthCookbookAudioProcessorEditor()
@@ -48,4 +51,7 @@ void SynthCookbookAudioProcessorEditor:: timerCallback()
 {
     keyboardComponent.grabKeyboardFocus();
     juce::Timer::stopTimer();
+    juce::String message;
+    message << "Callback function complete \n";
+    juce::Logger::getCurrentLogger()->writeToLog(message);
 }

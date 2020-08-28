@@ -22,6 +22,7 @@
 
 class Synth : public juce::Synthesiser
 {
+
 public:
-    void soundParameterChanged();
+    //void soundParameterChanged();
 };

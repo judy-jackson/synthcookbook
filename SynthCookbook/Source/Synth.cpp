@@ -11,9 +11,11 @@
 #include "Synth.h"
 #include "SynthVoice.h"
 
+/*
 void Synth::soundParameterChanged()
 {
     // Some sound parameter has been changed. Notify all active voices.
+    juce::Logger::getCurrentLogger()->writeToLog("Sound parameter changed (Synth) \n");
     const juce::ScopedLock sl(lock);
     
     for (int i = 0; i < voices.size(); ++i)
@@ -22,4 +24,6 @@ void Synth::soundParameterChanged()
         if (voice->isVoiceActive())
             voice->soundParameterChanged();
     }
+ 
 }
+ */

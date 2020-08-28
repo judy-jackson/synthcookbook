@@ -41,7 +41,7 @@ public:
     bool canPlaySound(juce::SynthesiserSound* sound) override
     { return dynamic_cast<SynthSound*> (sound) != nullptr; }
     
-    void soundParameterChanged();
+    //void soundParameterChanged();
     
     void startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) override;
     void stopNote(float velocity, bool allowTailOff) override;

@@ -32,5 +32,5 @@ public:
     SynthParameters* pParams;
     
     // call to notify owner Synth, that parameters have changed
-    void parameterChanged();
+    //void parameterChanged();
 };

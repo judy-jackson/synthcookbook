@@ -63,6 +63,12 @@ void SynthVoice::setup (bool pitchBendOnly)
     double sampleRateHz = getSampleRate();
     int midiNote = getCurrentlyPlayingNote();
     
+    //logging for troubleshooting
+    juce::String message;
+    message << "Current sample rate: " << getSampleRate() << "\n";
+    message << "Current MIDI note: " << midiNote << "\n";
+    juce::Logger::getCurrentLogger()->writeToLog(message);
+    
     float masterLevel = float(noteVelocity * pParams->masterLevel);
     double pbCents = pitchBendCents();
     
@@ -96,14 +102,19 @@ void SynthVoice::setup (bool pitchBendOnly)
     }
      
 }
+/*
 void SynthVoice::soundParameterChanged()
 {
     if (pParams == 0) return;
+    juce::Logger::getCurrentLogger()->writeToLog("Synth Voice: sound parameter changed \n");
     setup(false);
+    
 }
+ */
 
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
+    juce::Logger::getCurrentLogger()->writeToLog("Start note triggered (Synth Voice) \n");
     juce::ignoreUnused(midiNoteNumber);    // accessible as SynthesiserVoice::getCurrentlyPlayingNote();
     tailOff = false;
     noteVelocity = velocity;

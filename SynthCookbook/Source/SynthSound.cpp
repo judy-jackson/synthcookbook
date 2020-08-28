@@ -17,7 +17,10 @@ SynthSound::SynthSound(Synth& ownerSynth)
 {
 }
 
+/*
 void SynthSound::parameterChanged()
 {
+    juce::Logger::getCurrentLogger()->writeToLog("Sound parameter changed (SynthSound) \n");
     synth.soundParameterChanged();
 }
+ */
