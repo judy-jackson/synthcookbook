@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "SynthOscillator.h"
 
 class SynthVoice   : public juce::SynthesiserVoice
 {
@@ -31,10 +32,17 @@ public:
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
     
 private:
+    
+    SynthOscillator osc1, osc2;
+    
+    auto getNextSample(juce::AudioBuffer<float>& outputBuffer, int startSample);
+    
     double currentAngle = 0.0;
     double angleDelta   = 0.0;
     double level        = 0.0;
     double tailOff      = 0.0;
+    
+    bool isNoteOff;
     
     double sampleRate = getSampleRate();
     

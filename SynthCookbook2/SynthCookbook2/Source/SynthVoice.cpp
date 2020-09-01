@@ -21,15 +21,17 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
                 juce::SynthesiserSound* /*sound*/,
                 int /*currentPitchWheelPosition*/)
 {
-    //replace with call to oscillator
-    currentAngle = 0.0;
+    osc1.resetCurrentAngle();
+    osc2.resetCurrentAngle();
     level = velocity * 0.15;
     tailOff = 0.0;
     
     auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
     auto cyclesPerSample = cyclesPerSecond / sampleRate;
     
-    angleDelta = cyclesPerSample * juce::MathConstants<double>::twoPi;
+    osc1.setFrequency(cyclesPerSample);
+    osc2.setFrequency(cyclesPerSample);
+    isNoteOff = false;
 }
 
 void SynthVoice::stopNote (float /*velocity*/, bool allowTailOff)
@@ -46,54 +48,33 @@ void SynthVoice::stopNote (float /*velocity*/, bool allowTailOff)
     else
     {
         // we're being told to stop playing immediately, so reset everything..
-        
         clearCurrentNote();
-        angleDelta = 0.0;
+        isNoteOff = true;
     }
 }
 
-
 void SynthVoice::renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
-    if (angleDelta != 0.0)
-    {
-        if (tailOff > 0.0)
+        while (--numSamples >= 0 && !isNoteOff)
         {
-            while (--numSamples >= 0)
+            auto currentSample = (osc1.getSample() * osc1.getLevel() + osc2.getSample() * osc2.getLevel()) * level;
+            
+            for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
+                outputBuffer.addSample (i, startSample, currentSample);
+            
+            ++startSample;
+            
+            if (tailOff > 0.0)
             {
-                auto currentSample = (float) (sin (currentAngle) * level * tailOff);
-                
-                for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
-                
-                currentAngle += angleDelta;
-                ++startSample;
-                
                 tailOff *= 0.99;
-                
                 if (tailOff <= 0.005)
                 {
                     // tells the synth that this voice has stopped
                     clearCurrentNote();
-                    
-                    angleDelta = 0.0;
-                    break;
+                    isNoteOff = true;
+
                 }
             }
-        }
-        else
-        {
-            while (--numSamples >= 0)
-            {
-                auto currentSample = (float) (sin (currentAngle) * level);
-                
-                for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
-                
-                currentAngle += angleDelta;
-                ++startSample;
-            }
-        }
     }
 }
 
