@@ -15,8 +15,6 @@ class SynthWavetableOscillator
 {
 private:
     //SynthWaveform waveform;
-    //double currentAngle;            // [0.0, 1.0]
-    //double angleDelta;        // cycles per sample (fraction)
     float currentIndex = 0.0f, tableDelta = 0.0f;
     static const unsigned int tableSize = 1 << 7;
     
@@ -28,9 +26,9 @@ public:
     
     //void setWaveform(SynthWaveform wf) { waveform = wf; }
     void resetCurrentAngle() { currentIndex = 0; }
-    void setFrequency(double cyclesPerSample) { tableDelta = cyclesPerSample; }
+    void setFrequency(double cyclesPerSample) { tableDelta = (cyclesPerSample * tableSize); }
     
-    forcedinline float getSample() noexcept;
+    float getSample();
     float getLevel() {return 0.8;}
     
     static float sineTable[tableSize];

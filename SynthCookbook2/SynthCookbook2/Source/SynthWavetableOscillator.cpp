@@ -25,22 +25,19 @@ void SynthWavetableOscillator::initializeWavetable()
     }
 }
 
-forcedinline float SynthWavetableOscillator::getSample() noexcept
+float SynthWavetableOscillator::getSample()
 {
-    //auto tableSize = (unsigned int) wavetable.getNumSamples();
-    
-    auto index0 = (unsigned int) currentIndex;              // [6]
+    auto index0 = (unsigned int) currentIndex;
     auto index1 = index0 == (tableSize - 1) ? (unsigned int) 0 : index0 + 1;
     
-    auto frac = currentIndex - (float) index0;              // [7]
+    auto frac = currentIndex - (float) index0;
     
-    //auto* table = wavetable.getReadPointer (0);             // [8]
     auto value0 = sineTable[index0];
     auto value1 = sineTable[index1];
     
-    auto currentSample = value0 + frac * (value1 - value0); // [9]
+    auto currentSample = value0 + frac * (value1 - value0);
     
-    if ((currentIndex += tableDelta) > (float) tableSize)   // [10]
+    if ((currentIndex += tableDelta) > (float) tableSize)  
         currentIndex -= (float) tableSize;
         
         return currentSample;

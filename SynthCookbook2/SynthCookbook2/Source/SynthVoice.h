@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "SynthOscillator.h"
+#include "SynthWavetableOscillator.h"
 
 class SynthVoice   : public juce::SynthesiserVoice
 {
@@ -31,11 +32,9 @@ public:
     
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
     
-    void initOscillators( juce::AudioBuffer<float> waveTable);
-    
 private:
     
-    SynthOscillator osc1, osc2;
+    SynthWavetableOscillator osc1, osc2;
     
     auto getNextSample(juce::AudioBuffer<float>& outputBuffer, int startSample);
     
