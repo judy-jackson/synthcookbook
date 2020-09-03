@@ -4,6 +4,10 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="ASu1DI" name="SynthCookbook2">
     <GROUP id="{7A1FB751-4B9C-F15B-26EC-CB373D8B1B89}" name="Source">
+      <FILE id="oAbeOm" name="SynthWavetableOscillator.cpp" compile="1" resource="0"
+            file="Source/SynthWavetableOscillator.cpp"/>
+      <FILE id="B4YKI6" name="SynthWavetableOscillator.h" compile="0" resource="0"
+            file="Source/SynthWavetableOscillator.h"/>
       <FILE id="Job6d1" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="WJqoJH" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

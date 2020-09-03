@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "SynthVoice.h"
 #include "SynthSound.h"
+#include "SynthWavetableOscillator.h"
 
 //==============================================================================
 SynthCookbook2AudioProcessor::SynthCookbook2AudioProcessor()
@@ -24,6 +25,7 @@ SynthCookbook2AudioProcessor::SynthCookbook2AudioProcessor()
                        )
 #endif
 {
+    SynthWavetableOscillator::initializeWavetable();
     initializeSynth();
 }
 
@@ -38,6 +40,7 @@ void SynthCookbook2AudioProcessor::initializeSynth()
     
     // Add some voices...
     for (auto i = 0; i < numVoices; ++i)
+        
         synth.addVoice (new SynthVoice());
     
     // ..and give the synth a sound to play

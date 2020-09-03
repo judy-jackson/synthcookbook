@@ -27,7 +27,7 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
     tailOff = 0.0;
     
     auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-    auto cyclesPerSample = cyclesPerSecond / sampleRate;
+    auto cyclesPerSample = cyclesPerSecond / sampleRate; //move this to oscillator class
     
     osc1.setFrequency(cyclesPerSample);
     osc2.setFrequency(cyclesPerSample);

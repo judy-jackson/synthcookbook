@@ -31,6 +31,8 @@ public:
     
     void renderNextBlock (juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
     
+    void initOscillators( juce::AudioBuffer<float> waveTable);
+    
 private:
     
     SynthOscillator osc1, osc2;

@@ -65,6 +65,7 @@ public:
 private:
     
     juce::Synthesiser synth;
+    const unsigned int tableSize = 1 << 7;
     
     template <typename FloatType>
     void process(juce::AudioBuffer<FloatType>& buffer, juce::MidiBuffer& midiMessages);
