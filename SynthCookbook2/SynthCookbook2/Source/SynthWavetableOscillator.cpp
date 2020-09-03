@@ -10,7 +10,7 @@
 
 #include "SynthWavetableOscillator.h"
 
-float SynthWavetableOscillator::sineTable[tableSize];
+float SynthWavetableOscillator::sineTable[tableSize + 1];
 
 void SynthWavetableOscillator::initializeWavetable()
 {    
@@ -23,12 +23,14 @@ void SynthWavetableOscillator::initializeWavetable()
         sineTable[i] = (float) sample;
         tableAngle += tableDelta;
     }
+    
+    sineTable[tableSize] = sineTable[0];
 }
 
 float SynthWavetableOscillator::getSample()
 {
     auto index0 = (unsigned int) currentIndex;
-    auto index1 = index0 == (tableSize - 1) ? (unsigned int) 0 : index0 + 1;
+    auto index1 = index0 + 1;
     
     auto frac = currentIndex - (float) index0;
     

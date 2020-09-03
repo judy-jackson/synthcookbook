@@ -16,7 +16,7 @@ class SynthWavetableOscillator
 private:
     //SynthWaveform waveform;
     float currentIndex = 0.0f, tableDelta = 0.0f;
-    static const unsigned int tableSize = 1 << 10;
+    static const unsigned int tableSize = (1 << 10) - 1;
     
 public:
     //constructor initializes currentAngle, angleDelta
@@ -31,6 +31,6 @@ public:
     float getSample();
     float getLevel() {return 0.8;}
     
-    static float sineTable[tableSize];
+    static float sineTable[tableSize + 1];
     
 };
