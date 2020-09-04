@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "SynthOscillator.h"
 #include "SynthWavetableOscillator.h"
+#include "SynthAmpEnvGenerator.h"
 
 class SynthVoice   : public juce::SynthesiserVoice
 {
@@ -35,13 +36,21 @@ public:
 private:
     
     SynthWavetableOscillator osc1, osc2;
+    SynthAmpEnvGenerator ampEG;
     
     auto getNextSample(juce::AudioBuffer<float>& outputBuffer, int startSample);
+    //void setup();
     
     double currentAngle = 0.0;
     double angleDelta   = 0.0;
     double level        = 0.0;
     double tailOff      = 0.0;
+    
+    double attackSeconds = 0.5;
+    double decaySeconds = 1;
+    double releaseSeconds = 0.5;
+    double sustainLevel = 0.6;
+    
     
     bool isNoteOff;
     
