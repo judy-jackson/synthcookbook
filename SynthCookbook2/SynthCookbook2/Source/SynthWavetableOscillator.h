@@ -10,11 +10,12 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "SynthWaveform.h"
 
 class SynthWavetableOscillator
 {
 private:
-    //SynthWaveform waveform;
+    SynthWaveform waveform;
     float currentIndex = 0.0f, tableDelta = 0.0f;
     static const unsigned int tableSize = (1 << 10) - 1;
     
@@ -32,5 +33,8 @@ public:
     float getLevel() {return 0.8;}
     
     static float sineTable[tableSize + 1];
+    static float sawTable[tableSize + 1];
+    static float triTable[tableSize + 1];
+    static float squareTable[tableSize + 1];
     
 };
