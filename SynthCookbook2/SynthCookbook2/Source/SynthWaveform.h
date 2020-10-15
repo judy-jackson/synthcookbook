@@ -14,19 +14,22 @@
 class SynthWaveform
 {
 private:
-    enum WaveformTypeIndex {
-        kSine, kTriangle, kSquare, kSawtooth,
-        kNumberOfWaveformTypes
-    } index;
+    
     
     friend class SynthWavetableOscillator;
     
 public:
+    enum WaveformTypeIndex {
+        kSine, kTriangle, kSquare, kSawtooth,
+        kNumberOfWaveformTypes
+    } index;
     // default constructor
     //SynthWaveform() : index(kSine) {}
-    //SynthWaveform() : index(kSquare) {}
-    SynthWaveform() : index(kSawtooth) {}
+    SynthWaveform() : index(kSquare) {}
+    //SynthWaveform() : index(kSawtooth) {}
     //SynthWaveform() : index(kTriangle) {}
+    
+    
     
     // set to default state after construction
     void setToDefault() { index = kSine; }

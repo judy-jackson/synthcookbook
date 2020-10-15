@@ -25,7 +25,9 @@ SynthCookbook2AudioProcessor::SynthCookbook2AudioProcessor()
                        )
 #endif
 {
-    SynthWavetableOscillator::initializeWavetable();
+    SynthWavetable::initializeTables();
+    //SynthWavetableOscillator::initializeWavetable(); //change to SynthWavetable::initialize()
+    //assign 
     initializeSynth();
 }
 
