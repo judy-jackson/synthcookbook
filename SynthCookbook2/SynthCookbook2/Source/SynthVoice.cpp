@@ -12,6 +12,12 @@
 #include "SynthVoice.h"
 #include "SynthSound.h"
 
+void SynthVoice::initializeOscTables()
+{
+    osc1.initializeWavetable();
+    osc2.initializeWavetable();
+}
+
 bool SynthVoice::canPlaySound (juce::SynthesiserSound* sound)
 {
     return dynamic_cast<SynthSound*> (sound) != nullptr;
@@ -21,16 +27,24 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
                 juce::SynthesiserSound* /*sound*/,
                 int /*currentPitchWheelPosition*/)
 {
+    juce::Logger::getCurrentLogger()->writeToLog("Start note\n");
     osc1.resetCurrentAngle();
     osc2.resetCurrentAngle();
+    
     level = velocity * 0.15;
     tailOff = 0.0;
     
-    auto frequency = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-    auto cyclesPerSample = frequency / sampleRate; 
-    
-    osc1.setFrequency(cyclesPerSample);
-    osc2.setFrequency(cyclesPerSample);
+    double frequency = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    double ff = frequency;
+    auto cyclesPerSample = frequency / sampleRate;
+    double f = frequency;
+    juce::String out;
+    out << "Frequency in SynthVoice: " << f << "\n";
+    juce::Logger::getCurrentLogger()->writeToLog(out);
+    osc1.setFrequency(cyclesPerSample, ff); //why is this not passing in as the correct value?
+    osc2.setFrequency(cyclesPerSample, ff);
+    //osc1.setFrequency(cyclesPerSample, sampleRate);
+    //osc2.setFrequency(cyclesPerSample, sampleRate);
     
     //pass env params to env generator
     ampEG.attackSeconds = attackSeconds;

@@ -42,8 +42,9 @@ void SynthCookbook2AudioProcessor::initializeSynth()
     
     // Add some voices...
     for (auto i = 0; i < numVoices; ++i)
-        
-        synth.addVoice (new SynthVoice());
+        //new SynthVoice
+        //init oscillators
+        synth.addVoice (new SynthVoice()); //add voice
     
     // ..and give the synth a sound to play
     synth.addSound (new SynthSound());

@@ -17,13 +17,13 @@ class SynthWavetableOscillator
 {
 private:
     
-    wavetable currentTable;
+    wavetable* currentTable;
     float currentIndex = 0.0f, tableDelta = 0.0f;
     static const unsigned int tableSize = (1 << 10) - 1;
     
 public:
     //constructor initializes currentAngle, angleDelta
-    SynthWavetableOscillator() : currentIndex(0), tableDelta(0) { initializeWavetable(); }
+    SynthWavetableOscillator() : currentIndex(0), tableDelta(0) {initializeWavetable();}
     
     void initializeWavetable();
     
@@ -31,7 +31,8 @@ public:
     void resetCurrentAngle() { currentIndex = 0; }
     
     //refactor to include table selection based off frequency
-    void setFrequency(double cyclesPerSample) { tableDelta = (cyclesPerSample * tableSize); }
+    //void setFrequency(double cyclesPerSample) { tableDelta = (cyclesPerSample * tableSize); }
+    void setFrequency(double cyclesPerSample, double frequency);
     
     //add setWaveform when app becomes dynamic, include table selection
     
