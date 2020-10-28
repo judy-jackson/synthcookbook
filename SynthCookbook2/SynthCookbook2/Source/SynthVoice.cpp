@@ -27,7 +27,7 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
                 juce::SynthesiserSound* /*sound*/,
                 int /*currentPitchWheelPosition*/)
 {
-    juce::Logger::getCurrentLogger()->writeToLog("Start note\n");
+    //juce::Logger::getCurrentLogger()->writeToLog("Start note\n");
     osc1.resetCurrentAngle();
     osc2.resetCurrentAngle();
     
@@ -35,16 +35,10 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity,
     tailOff = 0.0;
     
     double frequency = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-    double ff = frequency;
+    //double ff = frequency;
     auto cyclesPerSample = frequency / sampleRate;
-    double f = frequency;
-    juce::String out;
-    out << "Frequency in SynthVoice: " << f << "\n";
-    juce::Logger::getCurrentLogger()->writeToLog(out);
-    osc1.setFrequency(cyclesPerSample, ff); //why is this not passing in as the correct value?
-    osc2.setFrequency(cyclesPerSample, ff);
-    //osc1.setFrequency(cyclesPerSample, sampleRate);
-    //osc2.setFrequency(cyclesPerSample, sampleRate);
+    osc1.setFrequency(cyclesPerSample, frequency);
+    osc2.setFrequency(cyclesPerSample, frequency);
     
     //pass env params to env generator
     ampEG.attackSeconds = attackSeconds;
