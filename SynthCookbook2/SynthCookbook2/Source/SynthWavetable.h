@@ -37,14 +37,16 @@ class SynthWavetable {
         static wavetable newTable(int size, float topFreq);
         static void fillArray(float* table, float* end, double increment, float waveformFunc(float), int size);
         static void generateTables(wavetable* tables, int numTables, int initSize, float initFreq, float waveformFunc(float), string tablename);
+        static void generateSineTable(wavetable* table, int tableSize, float waveformFunc(float));
         static void printTable(wavetable* table, ofstream& outfile);
     
         int getTableIndex(float freq);
         float toHz(float freq);
     
-        static float sawtoothWave(float phi){ return 2.0f * phi - 1.0f;; }
+        static float sawtoothWave(float phi){ return (2.0f * phi - 1.0f); }
         static float triangleWave(float phi){ return (2.0f * (0.5f - std::fabs(phi - 0.5f)) - 1.0f); }
-        static float squareWave(float phi){ return (phi <= 0.5f) ? 1.0f : -1.0f;; }
+        static float squareWave(float phi){ return ((phi <= 0.5f) ? 1.0f : -1.0f); }
+        static float sineWave(float phi){ return (std::sin(TWO_PI * phi));}
     
         //static ofstream logfile;
     
@@ -61,6 +63,6 @@ class SynthWavetable {
         static wavetable sawTables[numTables];
         static wavetable squareTables[numTables];
         static wavetable triTables[numTables];
-        static float sineTable[initTableSize];
+        static wavetable sineTable;
     
 };

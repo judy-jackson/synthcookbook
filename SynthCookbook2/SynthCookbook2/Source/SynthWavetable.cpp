@@ -13,7 +13,7 @@
 wavetable SynthWavetable::sawTables[numTables];
 wavetable SynthWavetable::squareTables[numTables];
 wavetable SynthWavetable::triTables[numTables];
-float SynthWavetable::sineTable[initTableSize];
+wavetable SynthWavetable::sineTable;
 
 wavetable* SynthWavetable::getTable(SynthWaveform waveform, float freq) //freq as Hz
 {
@@ -29,7 +29,8 @@ wavetable* SynthWavetable::getTable(SynthWaveform waveform, float freq) //freq a
         case SynthWaveform::kSine:
             //get sine table
             //juce::Logger::getCurrentLogger()->writeToLog("Sine waveform");
-            outTable = &(sawTables[tableIndex]); //replace w/ eventual sine table
+            //outTable = &(sawTables[tableIndex]); //replace w/ eventual sine table
+            outTable = &sineTable;
             break;
             
         case SynthWaveform::kSquare:
@@ -66,6 +67,7 @@ void SynthWavetable::initializeTables()
     generateTables(squareTables, numTables, initTableSize, initTopFreq, squareWave, "square.csv");
     generateTables(triTables, numTables, initTableSize, initTopFreq, triangleWave, "triangle.csv");
     //do something for sine
+    generateSineTable(&sineTable, initTableSize, sineWave);
 }
 
 void SynthWavetable::generateTables(wavetable* tables, int numTables, int initSize, float initFreq, float waveformFunc(float), string filename)
@@ -89,6 +91,14 @@ void SynthWavetable::generateTables(wavetable* tables, int numTables, int initSi
         tablePlot << "\n";
     }
     tablePlot.close();
+}
+
+void SynthWavetable::generateSineTable(wavetable* table, int tableSize, float waveformFunc(float))
+{
+    double tableDelta = TWO_PI / (double) (tableSize - 1);
+    wavetable initTable= newTable(tableSize, 10000);
+    fillArray(initTable.table, initTable.end, tableDelta, waveformFunc, tableSize);
+    *table = initTable;
 }
 
 wavetable SynthWavetable::newTable(int size, float topFreq)

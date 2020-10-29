@@ -24,10 +24,10 @@ public:
         kNumberOfWaveformTypes
     } index;
     // default constructor
-    //SynthWaveform() : index(kSine) {}
+    SynthWaveform() : index(kSine) {}
     //SynthWaveform() : index(kSquare) {}
     //SynthWaveform() : index(kSawtooth) {}
-    SynthWaveform() : index(kTriangle) {}
+    //SynthWaveform() : index(kTriangle) {}
     
     
     
